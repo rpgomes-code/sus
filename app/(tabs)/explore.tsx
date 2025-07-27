@@ -7,6 +7,7 @@ import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { IconSymbol } from '@/components/ui/IconSymbol';
+import { Fonts } from '@/constants/Fonts';
 
 export default function TabTwoScreen() {
   return (
@@ -58,7 +59,7 @@ export default function TabTwoScreen() {
       <Collapsible title="Custom fonts">
         <ThemedText>
           Open <ThemedText type="defaultSemiBold">app/_layout.tsx</ThemedText> to see how to load{' '}
-          <ThemedText style={{ fontFamily: 'SpaceMono' }}>
+          <ThemedText style={{ fontFamily: Fonts.regular }}>
             custom fonts such as this one.
           </ThemedText>
         </ThemedText>
