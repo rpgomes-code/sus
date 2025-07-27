@@ -1,48 +1,25 @@
-import { useThemeColor } from '@/hooks/useThemeColor';
-import { TextInput, View } from 'react-native';
+import * as React from 'react';
+import { TextInput, type TextInputProps } from 'react-native';
+import { cn } from '~/lib/utils';
 
-interface InputProps {
-  placeholder?: string;
-  value?: string;
-  onChangeText?: (text: string) => void;
-  className?: string;
-  error?: boolean;
-  disabled?: boolean;
-}
-
-export function Input({
-  placeholder,
-  value,
-  onChangeText,
-  className = '',
-  error = false,
-  disabled = false,
-}: InputProps) {
-  const textColor = useThemeColor({}, 'text');
-  const backgroundColor = useThemeColor({}, 'background');
-
+function Input({
+  className,
+  placeholderClassName,
+  ...props
+}: TextInputProps & {
+  ref?: React.RefObject<TextInput>;
+}) {
   return (
-    <View className={`${className}`}>
-      <TextInput
-        placeholder={placeholder}
-        value={value}
-        onChangeText={onChangeText}
-        editable={!disabled}
-        className={`
-          font-poppins rounded-lg
-          border-2
-          px-4
-          py-3
-          text-base
-          ${error ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'}
-          ${disabled ? 'opacity-50' : ''}
-        `}
-        style={{
-          color: textColor,
-          backgroundColor,
-        }}
-        placeholderTextColor={useThemeColor({}, 'icon')}
-      />
-    </View>
+    <TextInput
+      className={cn(
+        'web:flex h-10 native:h-12 web:w-full rounded-md border border-input bg-background px-3 web:py-2 text-base lg:text-sm native:text-lg native:leading-[1.25] text-foreground placeholder:text-muted-foreground web:ring-offset-background file:border-0 file:bg-transparent file:font-medium web:focus-visible:outline-none web:focus-visible:ring-2 web:focus-visible:ring-ring web:focus-visible:ring-offset-2',
+        props.editable === false && 'opacity-50 web:cursor-not-allowed',
+        className
+      )}
+      placeholderClassName={cn('text-muted-foreground', placeholderClassName)}
+      {...props}
+    />
   );
 }
+
+export { Input };

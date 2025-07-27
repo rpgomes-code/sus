@@ -1,43 +1,52 @@
-import { Text, View } from 'react-native';
+import * as Slot from '@rn-primitives/slot';
+import { cva, type VariantProps } from 'class-variance-authority';
+import { View, ViewProps } from 'react-native';
+import { cn } from '~/lib/utils';
+import { TextClassContext } from '~/components/ui/text';
 
-interface BadgeProps {
-  text: string;
-  variant?: 'success' | 'warning' | 'error' | 'info';
-  size?: 'sm' | 'md';
-  className?: string;
-}
+const badgeVariants = cva(
+  'web:inline-flex items-center rounded-full border border-border px-2.5 py-0.5 web:transition-colors web:focus:outline-none web:focus:ring-2 web:focus:ring-ring web:focus:ring-offset-2',
+  {
+    variants: {
+      variant: {
+        default: 'border-transparent bg-primary web:hover:opacity-80 active:opacity-80',
+        secondary: 'border-transparent bg-secondary web:hover:opacity-80 active:opacity-80',
+        destructive: 'border-transparent bg-destructive web:hover:opacity-80 active:opacity-80',
+        outline: 'text-foreground',
+      },
+    },
+    defaultVariants: {
+      variant: 'default',
+    },
+  }
+);
 
-export function Badge({ text, variant = 'info', size = 'md', className = '' }: BadgeProps) {
-  const getVariantClasses = () => {
-    switch (variant) {
-      case 'success':
-        return 'bg-green-100 text-green-800 border-green-200';
-      case 'warning':
-        return 'bg-yellow-100 text-yellow-800 border-yellow-200';
-      case 'error':
-        return 'bg-red-100 text-red-800 border-red-200';
-      case 'info':
-        return 'bg-blue-100 text-blue-800 border-blue-200';
-      default:
-        return 'bg-gray-100 text-gray-800 border-gray-200';
-    }
-  };
+const badgeTextVariants = cva('text-xs font-semibold ', {
+  variants: {
+    variant: {
+      default: 'text-primary-foreground',
+      secondary: 'text-secondary-foreground',
+      destructive: 'text-destructive-foreground',
+      outline: 'text-foreground',
+    },
+  },
+  defaultVariants: {
+    variant: 'default',
+  },
+});
 
-  const getSizeClasses = () => {
-    return size === 'sm' ? 'px-2 py-0.5 text-xs' : 'px-3 py-1 text-sm';
-  };
+type BadgeProps = ViewProps & {
+  asChild?: boolean;
+} & VariantProps<typeof badgeVariants>;
 
+function Badge({ className, variant, asChild, ...props }: BadgeProps) {
+  const Component = asChild ? Slot.View : View;
   return (
-    <View
-      className={`
-      inline-flex
-      rounded-full
-      border
-      ${getVariantClasses()}
-      ${getSizeClasses()}
-      ${className}
-    `}>
-      <Text className="font-poppins-medium text-center">{text}</Text>
-    </View>
+    <TextClassContext.Provider value={badgeTextVariants({ variant })}>
+      <Component className={cn(badgeVariants({ variant }), className)} {...props} />
+    </TextClassContext.Provider>
   );
 }
+
+export { Badge, badgeTextVariants, badgeVariants };
+export type { BadgeProps };
