@@ -1,59 +1,172 @@
-import { Image } from 'expo-image';
-import { Platform } from 'react-native';
-
 import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Progress } from '@/components/ui/progress';
+import { Separator } from '@/components/ui/separator';
+import { Text } from '@/components/ui/text';
+import { H1, H2, Muted, P } from '@/components/ui/typography';
+import { useState } from 'react';
+import { Platform, ScrollView, View } from 'react-native';
 
 export default function HomeScreen() {
+  const [progress, setProgress] = useState(33);
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          className="absolute bottom-0 left-0 h-[178px] w-[290px]"
-        />
-      }>
-      <ThemedView className="flex-row items-center gap-2">
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
+    <Card className="flex-1">
+      <ScrollView
+        className="flex-1"
+        contentContainerStyle={{ padding: 24, gap: 24 }}
+        showsVerticalScrollIndicator={false}>
+        {/* Welcome Header */}
+        <Card>
+          <CardHeader>
+            <View className="flex-row items-center gap-2">
+              <H1>Welcome!</H1>
+              <HelloWave />
+            </View>
+            <CardDescription>
+              Explore the new UI components in your updated React Native app
+            </CardDescription>
+          </CardHeader>
+        </Card>
 
-      <ThemedView className="mb-2 gap-2">
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
+        {/* Quick Actions */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Quick Actions</CardTitle>
+            <CardDescription>Get started with these common tasks</CardDescription>
+          </CardHeader>
+          <CardContent className="gap-3">
+            <Button className="w-full">
+              <Text className="text-primary-foreground">Start Building</Text>
+            </Button>
+            <View className="flex-row gap-2">
+              <Button variant="outline" className="flex-1">
+                <Text>Documentation</Text>
+              </Button>
+              <Button variant="secondary" className="flex-1">
+                <Text>Examples</Text>
+              </Button>
+            </View>
+          </CardContent>
+        </Card>
 
-      <ThemedView className="mb-2 gap-2">
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
+        {/* Development Progress */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Development Progress</CardTitle>
+            <CardDescription>Your project setup completion</CardDescription>
+          </CardHeader>
+          <CardContent className="gap-4">
+            <View className="gap-2">
+              <View className="flex-row items-center justify-between">
+                <P>Project Setup</P>
+                <Badge variant="default">
+                  <Text className="text-primary-foreground">{progress}%</Text>
+                </Badge>
+              </View>
+              <Progress value={progress} className="w-full" />
+            </View>
+            <View className="gap-2">
+              <P>✅ Expo Router configured</P>
+              <P>✅ UI Components installed</P>
+              <P>✅ Theming setup complete</P>
+              <P>🔄 Custom components integration</P>
+            </View>
+          </CardContent>
+        </Card>
 
-      <ThemedView className="mb-2 gap-2">
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+        {/* Getting Started Steps */}
+        <Card>
+          <CardHeader>
+            <H2>Getting Started</H2>
+            <CardDescription>Follow these steps to build your app</CardDescription>
+          </CardHeader>
+          <CardContent className="gap-4">
+            <View className="gap-2">
+              <View className="flex-row items-center gap-2">
+                <Badge variant="outline">
+                  <Text>1</Text>
+                </Badge>
+                <P className="font-medium">Explore Components</P>
+              </View>
+              <Muted className="ml-8">Check out the new UI components in the Explore tab</Muted>
+            </View>
+
+            <Separator />
+
+            <View className="gap-2">
+              <View className="flex-row items-center gap-2">
+                <Badge variant="outline">
+                  <Text>2</Text>
+                </Badge>
+                <P className="font-medium">Customize Styling</P>
+              </View>
+              <Muted className="ml-8">Modify colors and themes in global.css and constants</Muted>
+            </View>
+
+            <Separator />
+
+            <View className="gap-2">
+              <View className="flex-row items-center gap-2">
+                <Badge variant="outline">
+                  <Text>3</Text>
+                </Badge>
+                <P className="font-medium">Add Your Features</P>
+              </View>
+              <Muted className="ml-8">Start building your app with the component library</Muted>
+            </View>
+          </CardContent>
+        </Card>
+
+        {/* Developer Tools */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Developer Tools</CardTitle>
+            <CardDescription>Quick access to development features</CardDescription>
+          </CardHeader>
+          <CardContent className="gap-3">
+            <P>
+              Press{' '}
+              <Badge variant="secondary">
+                <Text className="font-mono">
+                  {Platform.select({
+                    ios: '⌘ + D',
+                    android: '⌘ + M',
+                    web: 'F12',
+                  })}
+                </Text>
+              </Badge>{' '}
+              to open developer tools
+            </P>
+            <Muted>Edit app/(tabs)/index.tsx to see changes in real-time</Muted>
+          </CardContent>
+        </Card>
+
+        {/* Reset Project */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Fresh Start</CardTitle>
+            <CardDescription>Ready to start building your own app?</CardDescription>
+          </CardHeader>
+          <CardContent className="gap-3">
+            <P>
+              Run{' '}
+              <Badge variant="outline">
+                <Text className="font-mono">npm run reset-project</Text>
+              </Badge>{' '}
+              to get a clean slate
+            </P>
+            <Muted>
+              This will move the current app to app-example and create a new app directory
+            </Muted>
+            <Button variant="destructive" className="w-full">
+              <Text className="text-destructive-foreground">Reset Project</Text>
+            </Button>
+          </CardContent>
+        </Card>
+      </ScrollView>
+    </Card>
   );
 }
